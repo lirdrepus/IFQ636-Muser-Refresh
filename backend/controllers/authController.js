@@ -2,7 +2,7 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-
+const UserAdapter = require('../adapters/UserAdapter')
 
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
@@ -37,16 +37,13 @@ const loginUser = async (req, res) => {
 
 const getProfile = async (req, res) => {
     try {
-      const user = await User.findById(req.user.id);
-      if (!user) {
+      const dbUser = await User.findById(req.user.id);
+      if (!dbUser) {
         return res.status(404).json({ message: 'User not found' });
       }
-  
+      const user = UserAdapter.adapt(dbUser);
       res.status(200).json({
-        name: user.name,
-        email: user.email,
-        university: user.university,
-        address: user.address,
+        user
       });
     } catch (error) {
       res.status(500).json({ message: 'Server error', error: error.message });
