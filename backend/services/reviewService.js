@@ -36,3 +36,16 @@ class ReviewBuilder{
         review.isHighlightable = (review.description.trim().split(/\s+/).length || 0) >= 50
     }
 }
+
+class ReviewObserver{
+    static observers = [];
+    static notifyObservers(review){
+        this.observers.forEach(subscriber => {
+            subscriber.update(review)
+        })
+    }
+    static subscribe(subscriber){
+        this.observers.push(subscriber)
+
+    }
+}
