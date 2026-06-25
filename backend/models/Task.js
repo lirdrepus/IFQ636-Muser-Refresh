@@ -9,7 +9,7 @@ const taskSchema = new mongoose.Schema({
     rating: { type: Number, required: true },
     date:{ type: String, required:true},
     time:{type: String,required:true},
-    isCriticReview: {type:Boolean, required:true}
+    isCriticReview: {type:Boolean, required:true},
     isHighlightable: {type:Boolean,required:true}
 });
 

@@ -5,10 +5,11 @@ const StatsObserver = require('../observers/StatsObserver');
 
 class ReviewFacade {
     static async makeReview(user,title, artist_name, description, rating){
-        const review = ReviewFactory.createReview(user.id,title,artist_name,description,rating);
+        const review = ReviewFactory.createReview(user._id,title,artist_name,description,rating);
         ReviewBuilder.buildReview(review,user);
         const task = await Task.create(review);
         ReviewObserver.notifyObservers(task); //Observers are notified with the task so they can track review id if needed
+        console.log(task)
         return task;
     }
 }
@@ -33,6 +34,7 @@ class ReviewBuilder{
         this.setCriticReview(review,user)
         this.setDateTime(review)
         this.setHighlightable(review)
+
     }
     static setCriticReview(review,user){
         review.isCriticReview = user.critic

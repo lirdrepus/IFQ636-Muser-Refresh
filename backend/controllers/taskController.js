@@ -1,6 +1,6 @@
 //Read
 const Task = require('../models/Task');
-const ReviewFacade = require('../services/ReviewFacade')  
+const ReviewFacade = require('../services/reviewService')  
 const getTasks = async (req, res) => {
 try {  
 const tasks = await Task.find({ userId: req.user.id });  
@@ -24,7 +24,7 @@ res.status(500).json({ message: error.message });
 const addTask = async (req, res) => { 
 const { title, artist_name, description, rating } = req.body; 
 try { 
-const task = await ReviewFacade.makeReview({user: req.user, title, artist_name, description, rating }); 
+const task = await ReviewFacade.makeReview(req.user, title, artist_name, description, rating ); 
 res.status(201).json(task); 
 } catch (error) { 
 res.status(500).json({ message: error.message }); 
